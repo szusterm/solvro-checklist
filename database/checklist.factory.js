@@ -35,3 +35,5 @@ class ChecklistItem {
 
 	}
 }
+
+module.exports = new Checklist();

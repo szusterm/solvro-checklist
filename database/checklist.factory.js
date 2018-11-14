@@ -51,4 +51,4 @@ class ChecklistItem {
 	}
 }
 
-module.exports = new Checklist();
+module.exports = (name) => new Checklist(name);

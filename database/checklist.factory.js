@@ -10,9 +10,9 @@ class Checklist {
 		const checklist = new ChecklistModel({name: this._name});
 
 		try {
-			const checklistExists = await this.exists();
+			const {data: checklistExists} = await this.exists();
 
-			if (!checklistExists.data) {
+			if (!checklistExists) {
 				const response = await checklist.save();
 
 				return getResponse(false, response);

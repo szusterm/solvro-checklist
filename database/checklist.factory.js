@@ -25,8 +25,23 @@ class Checklist {
 		}
 	}
 
-	delete() {
+	async delete() {
+		const deleteChecklistQuery = ChecklistModel.deleteOne({name: this._name});
 
+		try {
+			const {data: checklistExists} = await this.exists();
+
+			if (checklistExists) {
+				const response = await deleteChecklistQuery.exec();
+
+				return getResponse(false, response);
+			}
+
+			throw 'not exists';
+		}
+		catch (error) {
+			return getResponse(true, error);
+		}
 	}
 
 	async exists() {

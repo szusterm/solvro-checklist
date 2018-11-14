@@ -28,8 +28,25 @@ class Checklist {
 
 	}
 
-	exists() {
+	async exists() {
+		const countQuery = ChecklistModel
+			.where({name: this._name})
+			.countDocuments();
 
+		try {
+			const checklistsCount = await countQuery.exec();
+
+			return {
+				err: false,
+				data: (checklistsCount > 0)
+			};
+		}
+		catch (error) {
+			return {
+				err: true,
+				data: error
+			};
+		}
 	}
 }
 

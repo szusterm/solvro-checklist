@@ -1,4 +1,5 @@
 const ChecklistModel = require('./checklist.model');
+const getResponse = require('../helpers/getResponseObject');
 
 class Checklist {
 	constructor(name = '') {
@@ -11,16 +12,10 @@ class Checklist {
 		try {
 			const response = await checklist.save();
 
-			return {
-				err: false,
-				data: response
-			};
+			return getResponse(false, response);
 		}
 		catch (error) {
-			return {
-				err: true,
-				data: error
-			};
+			return getResponse(true, error);
 		}
 	}
 
@@ -35,17 +30,12 @@ class Checklist {
 
 		try {
 			const checklistsCount = await countQuery.exec();
+			const exists = (checklistsCount > 0);
 
-			return {
-				err: false,
-				data: (checklistsCount > 0)
-			};
+			return getResponse(false, exists);
 		}
 		catch (error) {
-			return {
-				err: true,
-				data: error
-			};
+			return getResponse(true, error);
 		}
 	}
 }

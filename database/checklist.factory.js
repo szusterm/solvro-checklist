@@ -1,8 +1,12 @@
 const ChecklistModel = require('./checklist.model');
 
 class Checklist {
-	async create(name) {
-		const checklist = new ChecklistModel({name});
+	constructor(name = '') {
+		this._name = name;
+	}
+
+	async create() {
+		const checklist = new ChecklistModel({name: this._name});
 
 		try {
 			const response = await checklist.save();

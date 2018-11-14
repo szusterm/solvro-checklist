@@ -6,6 +6,19 @@ class Checklist {
 		this._name = name;
 	}
 
+	async getAll() {
+		const findAllChecklistsQuery = ChecklistModel.find();
+
+		try {
+			const response = await findAllChecklistsQuery.exec();
+
+			return getResponse(false, response);
+		}
+		catch (error) {
+			return getResponse(true, error);
+		}
+	}
+
 	async create() {
 		const checklist = new ChecklistModel({name: this._name});
 

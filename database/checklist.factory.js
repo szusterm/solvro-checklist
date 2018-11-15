@@ -6,6 +6,10 @@ class Checklist {
 		this._name = name;
 	}
 
+	item() {
+		return new ChecklistItem();
+	}
+
 	async getAll() {
 		const findAllChecklistsQuery = ChecklistModel.find();
 
@@ -75,8 +79,8 @@ class Checklist {
 }
 
 class ChecklistItem {
-	constructor(listName) {
-		this._listName = listName;
+	constructor(checklistName = '') {
+		this._checklistName = checklistName;
 	}
 
 	create() {

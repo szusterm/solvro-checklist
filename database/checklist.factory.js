@@ -6,8 +6,8 @@ class Checklist {
 		this._name = name;
 	}
 
-	item() {
-		return new ChecklistItem();
+	item(itemName = '') {
+		return new ChecklistItem(this._name, itemName);
 	}
 
 	async getAll() {
@@ -79,12 +79,27 @@ class Checklist {
 }
 
 class ChecklistItem {
-	constructor(checklistName = '') {
+	constructor(checklistName = '', itemName = '') {
 		this._checklistName = checklistName;
+		this._itemName = itemName;
 	}
 
-	create() {
+	async create() {
+		const newItem = {name: this._itemName};
 
+		const pushItemQuery = ChecklistModel.findOneAndUpdate(
+			{name: this._checklistName},
+			{$push: {items: newItem}}
+		);
+
+		try {
+			const response = await pushItemQuery.exec();
+
+			return getResponse(false, response);
+		}
+		catch (error) {
+			return getResponse(true, error);
+		}
 	}
 
 	check() {

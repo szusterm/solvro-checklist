@@ -16,7 +16,9 @@ class Checklist {
 		try {
 			const response = await findAllChecklistsQuery.exec();
 
-			return getResponse(false, response);
+			const checklistsNames = this._getChecklistsNames(response);
+
+			return getResponse(false, checklistsNames);
 		}
 		catch (error) {
 			return getResponse(true, error);
@@ -75,6 +77,16 @@ class Checklist {
 		catch (error) {
 			return getResponse(true, error);
 		}
+	}
+
+	_getChecklistsNames(checklists = []) {
+		const checklistsNames = [];
+
+		for (const {name} of checklists) {
+			checklistsNames.push(name);
+		}
+
+		return checklistsNames;
 	}
 }
 

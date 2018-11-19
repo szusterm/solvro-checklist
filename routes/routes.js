@@ -11,6 +11,7 @@ router.route('/lists/:name')
 	.delete(controllers.deleteChecklist);
 
 router.route('/lists/:name/items')
+	.get(controllers.getAllItems)
 	.post(controllers.createChecklistItem);
 
 router.route('/lists/:name/items/:id')

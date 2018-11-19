@@ -30,7 +30,7 @@ exports.createChecklist = async (req, res) => {
 };
 
 exports.deleteChecklist = async (req, res) => {
-	const {name} = req.query;
+	const {name} = req.params;
 
 	const {err, data} = await checklist(name).delete();
 

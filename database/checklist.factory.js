@@ -107,7 +107,9 @@ class ChecklistItem {
 		try {
 			const response = await pushItemQuery.exec();
 
-			return getResponse(false, response);
+			const addedItemId = this._getLastItemId(response);
+
+			return getResponse(false, addedItemId);
 		}
 		catch (error) {
 			return getResponse(true, error);
@@ -160,6 +162,13 @@ class ChecklistItem {
 		catch (error) {
 			return getResponse(true, error);
 		}
+	}
+
+	_getLastItemId(checklist = {}) {
+		const {items} = checklist;
+		const lastItemIndex = items.length - 1;
+
+		return items[lastItemIndex]._id
 	}
 }
 

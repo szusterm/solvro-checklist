@@ -114,11 +114,25 @@ class ChecklistItem {
 		}
 	}
 
-	check() {
+	async delete(id = '') {
+		const itemToDelete = {_id: id};
 
+		const pushItemQuery = ChecklistModel.findOneAndUpdate(
+			{name: this._checklistName},
+			{$pull: {items: itemToDelete}}
+		);
+
+		try {
+			const response = await pushItemQuery.exec();
+
+			return getResponse(false, response);
+		}
+		catch (error) {
+			return getResponse(true, error);
+		}
 	}
 
-	delete() {
+	check() {
 
 	}
 }

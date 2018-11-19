@@ -117,15 +117,22 @@ class ChecklistItem {
 	async delete() {
 		const itemToDelete = {_id: this._filter};
 
-		const pushItemQuery = ChecklistModel.findOneAndUpdate(
+		const deleteItemQuery = ChecklistModel.findOneAndUpdate(
 			{name: this._checklistName},
 			{$pull: {items: itemToDelete}}
 		);
 
 		try {
-			const response = await pushItemQuery.exec();
+			const {data: itemExists} = await this.exists();
 
-			return getResponse(false, response);
+			if (itemExists) {
+				const response = await deleteItemQuery.exec();
+
+				return getResponse(false, response);
+			}
+			else {
+				throw 'not exists';
+			}
 		}
 		catch (error) {
 			return getResponse(true, error);

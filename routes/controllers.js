@@ -25,7 +25,7 @@ exports.createChecklist = async (req, res) => {
 		}
 	}
 	else {
-		res.status(200).end();
+		res.status(201).end();
 	}
 };
 

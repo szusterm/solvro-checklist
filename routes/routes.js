@@ -10,6 +10,9 @@ router.route('/lists')
 router.route('/lists/:name')
 	.delete(controllers.deleteChecklist);
 
+router.route('/lists/:name/items')
+	.post(controllers.createChecklistItem);
+
 router.route('/lists/:name/items/:id')
 	.delete(controllers.deleteChecklistItem);
 

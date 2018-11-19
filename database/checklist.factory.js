@@ -146,7 +146,7 @@ class ChecklistItem {
 	async exists() {
 		const countQuery = ChecklistModel
 			.where({
-				name: this._filter,
+				name: this._checklistName,
 				'items._id': {$in: this._filter}
 			})
 			.countDocuments();

@@ -3,6 +3,8 @@ const router = express.Router();
 
 const controllers = require('./controllers');
 
-router.get('/lists', controllers.getAllChecklists);
+router.route('/lists')
+	.get(controllers.getAllChecklists)
+	.post(controllers.createChecklist);
 
 module.exports = router;

@@ -96,6 +96,27 @@ class ChecklistItem {
 		this._filter = filter;
 	}
 
+	async getAll() {
+		const findChecklistQuery = ChecklistModel.findOne({name: this._checklistName});
+
+		try {
+			const checklistFactory = new Checklist(this._checklistName);
+			const {data: checklistExists} = await checklistFactory.exists();
+
+			if (checklistExists) {
+				const {items} = await findChecklistQuery.exec();
+
+				return getResponse(false, items);
+			}
+			else {
+				throw 'not exists';
+			}
+		}
+		catch (error) {
+			return getResponse(true, error);
+		}
+	}
+
 	async create() {
 		const newItem = {name: this._filter};
 

@@ -6,8 +6,8 @@ class Checklist {
 		this._name = name;
 	}
 
-	item(itemName = '') {
-		return new ChecklistItem(this._name, itemName);
+	item(filter = '') {
+		return new ChecklistItem(this._name, filter);
 	}
 
 	async getAll() {
@@ -91,13 +91,13 @@ class Checklist {
 }
 
 class ChecklistItem {
-	constructor(checklistName = '', itemName = '') {
+	constructor(checklistName = '', filter = '') {
 		this._checklistName = checklistName;
-		this._itemName = itemName;
+		this._filter = filter;
 	}
 
 	async create() {
-		const newItem = {name: this._itemName};
+		const newItem = {name: this._filter};
 
 		const pushItemQuery = ChecklistModel.findOneAndUpdate(
 			{name: this._checklistName},
@@ -114,8 +114,8 @@ class ChecklistItem {
 		}
 	}
 
-	async delete(id = '') {
-		const itemToDelete = {_id: id};
+	async delete() {
+		const itemToDelete = {_id: this._filter};
 
 		const pushItemQuery = ChecklistModel.findOneAndUpdate(
 			{name: this._checklistName},

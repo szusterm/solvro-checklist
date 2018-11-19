@@ -4,9 +4,27 @@ exports.getAllChecklists = async (req, res) => {
 	const {err, data} = await checklist().getAll();
 
 	if (err) {
-		res.sendStatus(500);
+		res.status(500).end();
 	}
 	else {
 		res.status(200).json(data);
+	}
+};
+
+exports.createChecklist = async (req, res) => {
+	const {name} = req.body;
+
+	const {err, data} = await checklist(name).create();
+
+	if (err) {
+		if (data === 'exists') {
+			res.status(409).end();
+		}
+		else {
+			res.status(500).end();
+		}
+	}
+	else {
+		res.status(200).end();
 	}
 };

@@ -135,6 +135,25 @@ class ChecklistItem {
 	check() {
 
 	}
+
+	async exists() {
+		const countQuery = ChecklistModel
+			.where({
+				name: this._filter,
+				'items._id': {$in: this._filter}
+			})
+			.countDocuments();
+
+		try {
+			const checklistsCount = await countQuery.exec();
+			const exists = (checklistsCount > 0);
+
+			return getResponse(false, exists);
+		}
+		catch (error) {
+			return getResponse(true, error);
+		}
+	}
 }
 
 module.exports = (name) => new Checklist(name);

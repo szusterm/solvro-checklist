@@ -106,7 +106,9 @@ class ChecklistItem {
 			if (checklistExists) {
 				const {items} = await findChecklistQuery.exec();
 
-				return getResponse(false, items);
+				const itemsWithoutIds = this._removeIdsFromItems(items);
+
+				return getResponse(false, itemsWithoutIds);
 			}
 			else {
 				throw 'not exists';
@@ -190,6 +192,16 @@ class ChecklistItem {
 		const lastItemIndex = items.length - 1;
 
 		return items[lastItemIndex]._id
+	}
+
+	_removeIdsFromItems(items = []) {
+		const itemsWithoutIds = [];
+
+		for (const {name, checked} of items) {
+			itemsWithoutIds.push({name, checked});
+		}
+
+		return itemsWithoutIds;
 	}
 }
 

@@ -28,3 +28,21 @@ exports.createChecklist = async (req, res) => {
 		res.status(200).end();
 	}
 };
+
+exports.deleteChecklist = async (req, res) => {
+	const {name} = req.query;
+
+	const {err, data} = await checklist(name).delete();
+
+	if (err) {
+		if (data === 'not exists') {
+			res.status(404).end();
+		}
+		else {
+			res.status(500).end();
+		}
+	}
+	else {
+		res.status(200).end();
+	}
+};

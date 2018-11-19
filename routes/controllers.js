@@ -47,6 +47,27 @@ exports.deleteChecklist = async (req, res) => {
 	}
 };
 
+
+
+exports.createChecklistItem = async (req, res) => {
+	const {name: checklistName} = req.params;
+	const {name: itemName} = req.body;
+
+	const {err, data} = await checklist(checklistName).item(itemName).create();
+
+	if (err) {
+		if (data === 'exists') {
+			res.status(409).end();
+		}
+		else {
+			res.status(500).end();
+		}
+	}
+	else {
+		res.status(200).end();
+	}
+};
+
 exports.deleteChecklistItem = async (req, res) => {
 	const {name: checklistName, id: itemId} = req.params;
 

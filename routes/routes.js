@@ -7,4 +7,7 @@ router.route('/lists')
 	.get(controllers.getAllChecklists)
 	.post(controllers.createChecklist);
 
+router.route('/lists/:name')
+	.delete(controllers.deleteChecklist);
+
 module.exports = router;

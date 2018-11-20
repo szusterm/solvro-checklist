@@ -187,6 +187,34 @@ class ChecklistItem {
 		}
 	}
 
+	async _isChecked() {
+		const findChecklistQuery = ChecklistModel.findOne({
+			name: this._checklistName
+		});
+
+		try {
+			const itemExists = await this.exists();
+
+			if (itemExists) {
+				const {items} = findChecklistQuery.exec();
+
+				for (const {_id, checked} of items) {
+					if (_id === this._filter && checked) {
+						return getResponse(false, true);
+					}
+				}
+
+				return getResponse(false, false);
+			}
+			else {
+				throw 'not exists';
+			}
+		}
+		catch (error) {
+			return getResponse(true, error);
+		}
+	}
+
 	_getLastItemId(checklist = {}) {
 		const {items} = checklist;
 		const lastItemIndex = items.length - 1;

@@ -169,18 +169,21 @@ class ChecklistItem {
 	}
 
 	async exists() {
-		const countQuery = ChecklistModel
-			.where({
-				name: this._checklistName,
-				'items._id': {$in: this._filter}
-			})
-			.countDocuments();
+		const findQuery = ChecklistModel
+			.findOne({
+				name: this._checklistName
+			});
 
 		try {
-			const checklistsCount = await countQuery.exec();
-			const exists = (checklistsCount > 0);
+			const {items} = await findQuery.exec();
 
-			return getResponse(false, exists);
+			for (const {_id} of items) {
+				if (_id == this._filter) {
+					return getResponse(false, true);
+				}
+			}
+
+			return getResponse(false, false);
 		}
 		catch (error) {
 			return getResponse(true, error);

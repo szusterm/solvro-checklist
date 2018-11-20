@@ -191,7 +191,7 @@ class ChecklistItem {
 		const {items} = checklist;
 		const lastItemIndex = items.length - 1;
 
-		return items[lastItemIndex]._id
+		return items[lastItemIndex]._id;
 	}
 
 	_removeIdsFromItems(items = []) {

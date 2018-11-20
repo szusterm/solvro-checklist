@@ -191,18 +191,18 @@ class ChecklistItem {
 	}
 
 	async _isChecked() {
-		const findChecklistQuery = ChecklistModel.findOne({
-			name: this._checklistName
-		});
+		const findQuery = ChecklistModel
+			.findOne({
+				name: this._checklistName
+			});
 
 		try {
-			const itemExists = await this.exists();
-
+			const {data: itemExists} = await this.exists();
 			if (itemExists) {
-				const {items} = findChecklistQuery.exec();
+				const {items} = await findQuery.exec();
 
 				for (const {_id, checked} of items) {
-					if (_id === this._filter && checked) {
+					if (_id == this._filter && checked) {
 						return getResponse(false, true);
 					}
 				}

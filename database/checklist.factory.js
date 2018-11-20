@@ -164,8 +164,34 @@ class ChecklistItem {
 		}
 	}
 
-	check() {
+	async check() {
+		try {
+			const {data: exists} = await this.exists();
 
+			if (exists) {
+				const {data: checked} = await this._isChecked();
+
+				const updateQuery = ChecklistModel.findOneAndUpdate(
+					{
+						name: this._checklistName,
+						'items._id': {$in: this._filter}
+					},
+					{
+						$set: {'items.$.checked': !checked}
+					}
+				);
+
+				updateQuery.exec();
+
+				return getResponse(false, !checked);
+			}
+			else {
+				throw 'not exists';
+			}
+		}
+		catch (error) {
+			return getResponse(true, error);
+		}
 	}
 
 	async exists() {

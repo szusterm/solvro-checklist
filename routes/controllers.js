@@ -13,7 +13,7 @@ exports.getAllChecklists = async (req, res) => {
 };
 
 exports.createChecklist = async (req, res) => {
-	const {name} = req.body;
+	const name = req.body;
 
 	const {err, data} = await checklist(name).create();
 
@@ -70,7 +70,7 @@ exports.getAllItems = async (req, res) => {
 
 exports.createChecklistItem = async (req, res) => {
 	const {name: checklistName} = req.params;
-	const {name: itemName} = req.body;
+	const itemName = req.body;
 
 	const {err, data} = await checklist(checklistName).item(itemName).create();
 
@@ -102,7 +102,7 @@ exports.deleteChecklistItem = async (req, res) => {
 
 exports.checkItem = async (req, res) => {
 	const {name: checklistName, id: itemId} = req.params;
-	const {checked} = req.body;
+	const checked = req.body;
 
 	const {err, data} = await checklist(checklistName).item(itemId).check(checked);
 

@@ -15,6 +15,7 @@ router.route('/lists/:name/items')
 	.post(controllers.createChecklistItem);
 
 router.route('/lists/:name/items/:id')
+	.patch(controllers.checkItem)
 	.delete(controllers.deleteChecklistItem);
 
 module.exports = router;

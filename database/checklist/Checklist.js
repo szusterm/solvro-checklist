@@ -1,5 +1,6 @@
 const ChecklistModel = require('./model');
 const ChecklistItem = require('./ChecklistItem');
+const {checklistExists} = require('./existFunctions');
 const getResponse = require('../../helpers/getResponseObject');
 
 class Checklist {
@@ -65,19 +66,7 @@ class Checklist {
 	}
 
 	async exists() {
-		const countQuery = ChecklistModel
-			.where({name: this._name})
-			.countDocuments();
-
-		try {
-			const checklistsCount = await countQuery.exec();
-			const exists = (checklistsCount > 0);
-
-			return getResponse(false, exists);
-		}
-		catch (error) {
-			return getResponse(true, error);
-		}
+		return await checklistExists(this._name);
 	}
 
 	_getChecklistsNames(checklists = []) {

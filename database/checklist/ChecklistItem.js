@@ -1,5 +1,6 @@
 const ChecklistModel = require('./model');
 const Checklist = require('./Checklist');
+const {checklistExists, checklistItemExists} = require('./existFunctions');
 const getResponse = require('../../helpers/getResponseObject');
 
 class ChecklistItem {
@@ -12,10 +13,9 @@ class ChecklistItem {
 		const findChecklistQuery = ChecklistModel.findOne({name: this._checklistName});
 
 		try {
-			const checklistFactory = new Checklist(this._checklistName);
-			const {data: checklistExists} = await checklistFactory.exists();
+			const {data: exists} = await checklistExists(this._checklistName);
 
-			if (checklistExists) {
+			if (exists) {
 				const {items} = await findChecklistQuery.exec();
 
 				const itemsWithoutIds = this._removeIdsFromItems(items);
@@ -107,25 +107,7 @@ class ChecklistItem {
 	}
 
 	async exists() {
-		const findQuery = ChecklistModel
-			.findOne({
-				name: this._checklistName
-			});
-
-		try {
-			const {items} = await findQuery.exec();
-
-			for (const {_id} of items) {
-				if (_id == this._filter) {
-					return getResponse(false, true);
-				}
-			}
-
-			return getResponse(false, false);
-		}
-		catch (error) {
-			return getResponse(true, error);
-		}
+		return await checklistItemExists(this._checklistName, this._filter);
 	}
 
 	async _isChecked() {

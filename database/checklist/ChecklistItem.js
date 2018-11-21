@@ -77,13 +77,15 @@ class ChecklistItem {
 	}
 
 	async check(checked = true) {
+		const securedChecked = Boolean(checked);
+
 		const updateQuery = ChecklistModel.findOneAndUpdate(
 			{
 				name: this._checklistName,
 				'items._id': {$in: this._filter}
 			},
 			{
-				$set: {'items.$.checked': checked}
+				$set: {'items.$.checked': securedChecked}
 			}
 		);
 
@@ -93,7 +95,7 @@ class ChecklistItem {
 			if (exists) {
 				updateQuery.exec();
 
-				return getResponse(false, checked);
+				return getResponse(false, securedChecked);
 			}
 			else {
 				throw constants.ERROR_NOT_EXISTS;

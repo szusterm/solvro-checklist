@@ -102,8 +102,9 @@ exports.deleteChecklistItem = async (req, res) => {
 
 exports.checkItem = async (req, res) => {
 	const {name: checklistName, id: itemId} = req.params;
+	const {checked} = req.body;
 
-	const {err, data} = await checklist(checklistName).item(itemId).check();
+	const {err, data} = await checklist(checklistName).item(itemId).check(checked);
 
 	if (err) {
 		if (data === constants.ERROR_NOT_EXISTS) {

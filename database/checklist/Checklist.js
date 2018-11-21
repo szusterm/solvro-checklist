@@ -90,3 +90,5 @@ class Checklist {
 		return checklistsNames;
 	}
 }
+
+module.exports = Checklist;

@@ -1,4 +1,4 @@
-const checklist = require('../database/checklist.factory');
+const checklist = require('../database/checklist');
 
 exports.getAllChecklists = async (req, res) => {
 	const {err, data} = await checklist().getAll();

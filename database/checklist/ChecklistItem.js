@@ -173,3 +173,5 @@ class ChecklistItem {
 		return itemsWithoutIds;
 	}
 }
+
+module.exports = ChecklistItem;

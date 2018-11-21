@@ -1,4 +1,5 @@
 const checklist = require('../database/checklist');
+const constants = require('../constants');
 
 exports.getAllChecklists = async (req, res) => {
 	const {err, data} = await checklist().getAll();
@@ -17,7 +18,7 @@ exports.createChecklist = async (req, res) => {
 	const {err, data} = await checklist(name).create();
 
 	if (err) {
-		if (data === 'exists') {
+		if (data === constants.ERROR_EXISTS) {
 			res.status(409).end();
 		}
 		else {
@@ -35,7 +36,7 @@ exports.deleteChecklist = async (req, res) => {
 	const {err, data} = await checklist(name).delete();
 
 	if (err) {
-		if (data === 'not exists') {
+		if (data === constants.ERROR_NOT_EXISTS) {
 			res.status(404).end();
 		}
 		else {
@@ -55,7 +56,7 @@ exports.getAllItems = async (req, res) => {
 	const {err, data} = await checklist(checklistName).item().getAll();
 
 	if (err) {
-		if (data === 'not exists') {
+		if (data === constants.ERROR_NOT_EXISTS) {
 			res.status(404).end();
 		}
 		else {
@@ -87,7 +88,7 @@ exports.deleteChecklistItem = async (req, res) => {
 	const {err, data} = await checklist(checklistName).item(itemId).delete();
 
 	if (err) {
-		if (data === 'not exists') {
+		if (data === constants.ERROR_NOT_EXISTS) {
 			res.status(404).end();
 		}
 		else {
@@ -105,7 +106,7 @@ exports.checkItem = async (req, res) => {
 	const {err, data} = await checklist(checklistName).item(itemId).check();
 
 	if (err) {
-		if (data === 'not exists') {
+		if (data === constants.ERROR_NOT_EXISTS) {
 			res.status(404).end();
 		}
 		else {

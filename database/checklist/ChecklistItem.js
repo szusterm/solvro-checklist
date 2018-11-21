@@ -76,26 +76,24 @@ class ChecklistItem {
 		}
 	}
 
-	async check() {
+	async check(checked = true) {
+		const updateQuery = ChecklistModel.findOneAndUpdate(
+			{
+				name: this._checklistName,
+				'items._id': {$in: this._filter}
+			},
+			{
+				$set: {'items.$.checked': checked}
+			}
+		);
+
 		try {
 			const {data: exists} = await this.exists();
 
 			if (exists) {
-				const {data: checked} = await this._isChecked();
-
-				const updateQuery = ChecklistModel.findOneAndUpdate(
-					{
-						name: this._checklistName,
-						'items._id': {$in: this._filter}
-					},
-					{
-						$set: {'items.$.checked': !checked}
-					}
-				);
-
 				updateQuery.exec();
 
-				return getResponse(false, !checked);
+				return getResponse(false, checked);
 			}
 			else {
 				throw constants.ERROR_NOT_EXISTS;
@@ -108,34 +106,6 @@ class ChecklistItem {
 
 	async exists() {
 		return await checklistItemExists(this._checklistName, this._filter);
-	}
-
-	async _isChecked() {
-		const findQuery = ChecklistModel
-			.findOne({
-				name: this._checklistName
-			});
-
-		try {
-			const {data: itemExists} = await this.exists();
-			if (itemExists) {
-				const {items} = await findQuery.exec();
-
-				for (const {_id, checked} of items) {
-					if (_id == this._filter && checked) {
-						return getResponse(false, true);
-					}
-				}
-
-				return getResponse(false, false);
-			}
-			else {
-				throw constants.ERROR_NOT_EXISTS;
-			}
-		}
-		catch (error) {
-			return getResponse(true, error);
-		}
 	}
 
 	_getLastItemId(checklist = {}) {

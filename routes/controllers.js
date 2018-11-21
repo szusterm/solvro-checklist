@@ -98,3 +98,21 @@ exports.deleteChecklistItem = async (req, res) => {
 		res.status(200).end();
 	}
 };
+
+exports.checkItem = async (req, res) => {
+	const {name: checklistName, id: itemId} = req.params;
+
+	const {err, data} = await checklist(checklistName).item(itemId).check();
+
+	if (err) {
+		if (data === 'not exists') {
+			res.status(404).end();
+		}
+		else {
+			res.status(500).end();
+		}
+	}
+	else {
+		res.status(202).end();
+	}
+};

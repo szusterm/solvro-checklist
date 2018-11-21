@@ -1,4 +1,4 @@
-const ChecklistModel = require('../checklist.model');
+const ChecklistModel = require('./model');
 const ChecklistItem = require('./ChecklistItem');
 const getResponse = require('../../helpers/getResponseObject');
 

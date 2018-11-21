@@ -1,6 +1,7 @@
 const ChecklistModel = require('./model');
 const ChecklistItem = require('./ChecklistItem');
 const {checklistExists} = require('./existFunctions');
+const constants = require('../../constants');
 const getResponse = require('../../helpers/getResponseObject');
 
 class Checklist {
@@ -39,7 +40,7 @@ class Checklist {
 				return getResponse(false, response);
 			}
 
-			throw 'exists';
+			throw constants.ERROR_EXISTS;
 		}
 		catch (error) {
 			return getResponse(true, error);
@@ -58,7 +59,7 @@ class Checklist {
 				return getResponse(false, response);
 			}
 
-			throw 'not exists';
+			throw constants.ERROR_NOT_EXISTS;
 		}
 		catch (error) {
 			return getResponse(true, error);
